@@ -1,17 +1,33 @@
 const Ringkasan = () => {
   return (
     <div
-      className="h-full border-gray-700 shadow flex flex-col justify-between"
+      className="py-20 h-full border-gray-700 shadow flex flex-col justify-between"
       style={{ backgroundColor: "#28293D" }}
     >
-      <div class="flex flex-col">
-        <div class="overflow-x-auto">
-          <div class="flex flex-row inline-block w-full mt-8 py-2 sm:px-6 lg:px-8">
-            <div className="mt-10 mx-20 w-1/2 text-white">
-              <p className="text-6xl font-bold text-justify mb-10">
-                LOREM IPSUM WITH JAJAKA
-              </p>
-              <p className="text-xl mb-20 text-justify">
+      <div className="flex flex-col">
+        <div className="overflow-x-auto">
+          <p className="mt-2 text-5xl font-bold mb-10 text-center text-white">
+            REVERSE IMAGE SEARCH
+          </p>
+          <div className="flex flex-row inline-block w-full mt-32">
+            <div className=" w-3/5 mt-5 h-fit bg-black mx-16">
+              <img
+                src="public\images\beranda.png"
+                alt="logo"
+                className=" ml-5 p-8 rounded-t-lg"
+              />
+            </div>
+            <div className="flex flex-col mt-10 mx-20 w-2/5 text-white justify-center items-center text-lg">
+              <div className="h-full">
+                <p className="text-white font-bold my-4">Image Input</p>
+                <a
+                  href="#"
+                  className="inline-block text-xl align-middle px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                >
+                  Insert an Image
+                </a>
+              </div>
+              {/* <p className="text-xl mb-20 text-justify">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
                 lobortis ipsum nec dignissim consectetur. Pellentesque pharetra
                 enim id aliquet dignissim. Suspendisse in ullamcorper mi. Aenean
@@ -19,21 +35,31 @@ const Ringkasan = () => {
                 eget enim. Maecenas sed lacus scelerisque, elementum nisl id,
                 fermentum nisi. Aenean nec purus. Lorem ipsum dolor sit amet,
                 consectetur adipiscing elit. purus.{" "}
-              </p>
-              <a
-                href="#"
-                class="inline-block text-2xl h-20 align-middle px-4 py-6 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 mt-4 mb-8 lg:mt-0 bg-white font-semibold"
-              >
-                Download JAJAKA
-              </a>
-            </div>
-
-            <div className=" w-1/2 mt-5 h-fit">
-              <img
-                src="public\images\beranda.png"
-                alt="logo"
-                className=" ml-5 p-8 rounded-t-lg"
-              />
+              </p> */}
+              <div className="h-full justify-center items-center text-center mt-32">
+                <div className="flex flex-row">
+                  <a
+                    href="#"
+                    className="inline-block text-xl align-middle px-6 py-2 mx-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                  >
+                    Color
+                  </a>
+                  <a
+                    href="#"
+                    className="inline-block text-xl align-middle px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                  >
+                    Texture
+                  </a>
+                </div>
+                <div className="my-2">
+                  <a
+                    href="#"
+                    className="inline-block text-xl align-middle px-16 py-2 mx-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                  >
+                    Search
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
