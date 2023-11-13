@@ -9,6 +9,7 @@ import ProductsPage from "./pages/Index/products";
 import KasirPage from "./pages/kasir";
 import Aktivitas from "./pages/Aktivitas/aktivitas";
 import TentangKami from "./pages/TentangKami/tentangKami";
+import FileUpload from "./pages/FileUpload";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
     path: "/aktivitas",
     element: <Aktivitas />,
   },
+  {
+    path: "/file",
+    element: <FileUpload />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

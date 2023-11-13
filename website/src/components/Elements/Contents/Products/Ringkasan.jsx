@@ -1,7 +1,7 @@
 const Ringkasan = () => {
   return (
     <div
-      className="py-20 h-full border-gray-700 shadow flex flex-col justify-between"
+      className="py-20 w-full h-full border-gray-700 shadow flex flex-col justify-between"
       style={{ backgroundColor: "#28293D" }}
     >
       <div className="flex flex-col">
