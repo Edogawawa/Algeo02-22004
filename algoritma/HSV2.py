@@ -1,10 +1,13 @@
 from cv2 import imread
 import numpy as np
+from numpy.linalg import norm
 from math import sqrt
 import sys
 import time
 from colorama import Fore, Back, Style
 np.set_printoptions(threshold=sys.maxsize)
+
+# segmentation, resizing, enchancement
 
 def write_to_file(fname, data):
     fname = "file_output/" + fname
@@ -19,9 +22,9 @@ def count_hsv(B, G, R):
 
     # print(max_values[0][0], min_values[0][0], delta_values[0][0])
     # print(h)
-    h = np.where(max_values == R, (60 * ((G - B) / delta_values) + 360) % 360, 0)
-    h += np.where(max_values == G, (60 * ((B - R) / delta_values) + 120) % 360, 0)
-    h += np.where(max_values == B, (60 * ((R - G) / delta_values) + 240) % 360, 0)
+    h = np.where(np.logical_and(max_values == R, delta_values != 0), (60 * ((G - B) / delta_values) + 360) % 360, 0)
+    h += np.where(np.logical_and(max_values == G, delta_values != 0), (60 * ((B - R) / delta_values) + 120) % 360, 0)
+    h += np.where(np.logical_and(max_values == B, delta_values != 0), (60 * ((R - G) / delta_values) + 240) % 360, 0)
     h = np.where(delta_values != 0, h, 0)
     h = np.where(h > 360, h//2, h)
     
@@ -48,11 +51,11 @@ def to_hsv(img):
     # print(B[0][0], G[0][0], R[0][0])
     # print("B shape", B.shape)
     # write_to_file("hsv2.txt", B)
-    arr_h = np.zeros((3, 3, img.shape[0]//3, img.shape[1]//3))
-    arr_s = np.zeros((3, 3, img.shape[0]//3, img.shape[1]//3))
-    arr_v = np.zeros((3, 3, img.shape[0]//3, img.shape[1]//3))
-    for i in range(3):
-        for j in range(3):
+    arr_h = np.zeros((4, 4, img.shape[0]//4, img.shape[1]//4))
+    arr_s = np.zeros((4, 4, img.shape[0]//4, img.shape[1]//4))
+    arr_v = np.zeros((4, 4, img.shape[0]//4, img.shape[1]//4))
+    for i in range(4):
+        for j in range(4):
             h, s, v =  count_hsv(B[i][j], G[i][j], R[i][j])
             arr_h[i][j] = h
             arr_s[i][j] = s
@@ -83,39 +86,28 @@ def masking(h, s, v):
     return np.hstack(( h, s, v )).ravel()
 
 def cosine_similarity(v1, v2):
-    mat_jumlah_dot = np.zeros((3, 3))
-    jumlah_dot = v1 * v2
-    for i in range(3):
-        for j in range(3):
-            mat_jumlah_dot[i][j] = sum(jumlah_dot[i][j])
+    print(v1.shape, v2.shape)
+    temp = np.zeros((4, 4))
+    for i in range (v1.shape[0]):
+        for j in range(v1.shape[1]):
+            x = np.dot(v1[i][j], v2[i][j])
+            temp[i][j] = x / (norm(v1[i][j]) * norm(v2[i][j]))
 
-    # print(mat_jumlah_dot[0][0])
-    mat_kal_dot1 = np.zeros((3, 3))
-    mat_kal_dot2 = np.zeros((3, 3))
-
-    kali_dot1 = (v1 * v1)
-    kali_dot2 = (v2 * v2)
-    
-    for i in range(3):
-        for j in range(3):
-            mat_kal_dot1[i][j] = sqrt(sum(kali_dot1[i][j]))
-            mat_kal_dot2[i][j] = sqrt(sum(kali_dot2[i][j]))
-
-    return ((mat_jumlah_dot) / (mat_kal_dot1 * mat_kal_dot2))
+    return temp
 
 def preprocess(array):
     # print(array.shape)
     row, col = array.shape[0], array.shape[1]
-    row = row - (row % 3)
-    col = col - (col % 3)
-    row //= 3
-    col //= 3
+    row = row - (row % 4)
+    col = col - (col % 4)
+    row //= 4
+    col //= 4
     # print(row, col)
 
-    img = np.zeros((3, 3, row, col))
+    img = np.zeros((4, 4, row, col))
     # print(img)
-    for i in range(3):
-        for j in range(3):
+    for i in range(4):
+        for j in range(4):
             temp = array[i*row:i*row + row, j*col: j*col + col]
             # print(temp)
             img[i][j] = temp
@@ -127,9 +119,9 @@ def get_histogram(f1):
     h1, s1, v1 = to_hsv(img1)
     # print(h1.shape, s1.shape, v1.shape)
     
-    vector1 = np.zeros((3, 3, 14))
-    for i in range(3):
-        for j in range(3):
+    vector1 = np.zeros((4, 4, 14))
+    for i in range(4):
+        for j in range(4):
             temp = masking(h1[i][j], s1[i][j], v1[i][j])
             vector1[i][j] = temp
     # print(vector1)
@@ -141,17 +133,26 @@ def main(f1, f2):
     vector1 = get_histogram(f1)
     vector2 = get_histogram(f2)
 
+    # print(vector1)
     # for i in range(3):
     #     for j in range(3):
 
     result = cosine_similarity(vector1, vector2)
+    print(result)
+
+    # weighted
+    weight = np.array([[1, 1, 1, 1], 
+                       [1, 1, 1, 1], 
+                       [1, 1, 1, 1], 
+                       [1, 1, 1, 1]])
+    result = result * weight
     result = sum(sum(result))
-    print("similarity:", result/9*100)
+    print("similarity:", result/16)
 
 if __name__ == "__main__":
     
-    f1 = "images/result.png"
-    f2 = "images/chat_gpt_lena.png"
+    f1 = "images/marvel_kucing3.jpg"
+    f2 = "images/marvel_kucing2.jpg"
     print(f1, f2)
     print()
 
