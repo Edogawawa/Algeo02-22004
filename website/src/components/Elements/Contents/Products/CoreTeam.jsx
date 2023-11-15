@@ -50,9 +50,15 @@ const VisiMisi = () => {
                 <p>1 | 2 | 3 | Ini pagination | 4 | 5 | 6</p>
                 <a
                   href="#"
-                  className="inline-block text-xl align-middle my-6 px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                  className="inline-block text-xl align-middle mx-2 my-6 px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
                 >
                   Upload Dataset
+                </a>
+                <a
+                  href="#"
+                  className="inline-block text-xl align-middle mx-2 my-6 px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                >
+                  Image Scraping
                 </a>
               </div>
             </div>
