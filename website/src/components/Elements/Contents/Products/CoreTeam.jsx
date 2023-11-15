@@ -1,4 +1,4 @@
-const VisiMisi = () => {
+const Ndasem = () => {
   return (
     <div
       className="w-full border-gray-700 shadow flex flex-col justify-between"
@@ -63,4 +63,4 @@ const VisiMisi = () => {
   );
 };
 
-export default VisiMisi;
+export default Ndasem;

@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 // importing components from react-router-dom package
 import {
   BrowserRouter as Router,
@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 // import Home component
-import Home from "./components/Home";
+// import Home from "./components/Home";
 // import About component
 import About from "./components/About";
 // import ContactUs component
