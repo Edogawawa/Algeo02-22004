@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginPage from "./pages/login.jsx";
-import RegisterPage from "./pages/register.jsx";
+// import LoginPage from "./pages/login.jsx";
+// import RegisterPage from "./pages/register.jsx";
 import ErrorPage from "./pages/404.jsx";
 import ProductsPage from "./pages/Index/products";
-import KasirPage from "./pages/kasir";
-import Aktivitas from "./pages/Aktivitas/aktivitas";
-import TentangKami from "./pages/TentangKami/tentangKami";
-import FileUpload from "./pages/FileUpload";
+// import KasirPage from "./pages/kasir";
+// import Aktivitas from "./pages/Aktivitas/aktivitas";
+// import TentangKami from "./pages/TentangKami/tentangKami";
+// import FileUpload from "./pages/FileUpload";
 
 const router = createBrowserRouter([
   {
@@ -17,30 +17,30 @@ const router = createBrowserRouter([
     element: <ProductsPage />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/kasir",
-    element: <KasirPage />,
-  },
-  {
-    path: "/tentangKami",
-    element: <TentangKami />,
-  },
-  {
-    path: "/aktivitas",
-    element: <Aktivitas />,
-  },
-  {
-    path: "/file",
-    element: <FileUpload />,
-  }
+  // {
+  //   path: "/login",
+  //   element: <LoginPage />,
+  // },
+  // {
+  //   path: "/register",
+  //   element: <RegisterPage />,
+  // },
+  // {
+  //   path: "/kasir",
+  //   element: <KasirPage />,
+  // },
+  // {
+  //   path: "/tentangKami",
+  //   element: <TentangKami />,
+  // },
+  // {
+  //   path: "/aktivitas",
+  //   element: <Aktivitas />,
+  // },
+  // {
+  //   path: "/file",
+  //   element: <FileUpload />,
+  // }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
