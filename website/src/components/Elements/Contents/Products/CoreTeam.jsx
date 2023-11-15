@@ -38,12 +38,12 @@ const VisiMisi = () => {
                 <img
                   src="public\images\shoes-1.jpg"
                   alt="logo"
-                  className="transition duration-300 ease-in-out hover:opacity-50 py-6 "
+                  className="transition duration-300 ease-in-out hover:opacity-50 py-6"
                 />
                 <img
                   src="public\images\shoes-1.jpg"
                   alt="logo"
-                  className="transition duration-300 ease-in-out hover:opacity-50 py-6 "
+                  className="transition duration-300 ease-in-out hover:opacity-50 py-6"
                 />
               </div>
               <div className="my-10 text-center text-xl font-bold">
