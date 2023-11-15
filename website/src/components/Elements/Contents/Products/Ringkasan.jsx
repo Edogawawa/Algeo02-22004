@@ -71,7 +71,7 @@ const Ringkasan = () => {
                   Upload Image
                 </button>
               </div>
-              <div className="h-full justify-center items-center text-center mt-32 ">
+              <div className="h-full justify-center items-center text-center mt-32">
                 {/* ... rest of the code ... */}
                 <div className="flex flex-row">
                    <a
