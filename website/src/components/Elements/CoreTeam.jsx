@@ -76,12 +76,19 @@ const Ndasem = () => {
               )}
               <div className="my-10 text-center text-xl font-bold">
                 <p>1 | 2 | 3 | Ini pagination | 4 | 5 | 6</p>
-                <a
-                  href="#"
-                  className="inline-block text-xl align-middle my-6 px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                {/* Form for uploading dataset */}
+                <form
+                  action="http://localhost:8080/uploadDataset"
+                  method="post"
+                  encType="multipart/form-data"
                 >
-                  Upload Dataset
-                </a>
+                  <input type="file" name="files" multiple />
+                  <input
+                    type="submit"
+                    value="Submit"
+                    className="inline-block text-xl align-middle my-6 px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                  />
+                </form>
               </div>
             </div>
           </div>
