@@ -1,12 +1,12 @@
 import { Fragment } from "react";
 // import Navbar from "../../components/Elements/Navbar/Navbar";
-import CucakRowo from "../components/Elements/Contents/Products/Ringkasan";
-import Ndasem from "../components/Elements/Contents/Products/CoreTeam";
+import CucakRowo from "../components/Elements/Ringkasan";
+import Ndasem from "../components/Elements/CoreTeam";
 
 const ProductsPage = () => {
   // const slides = [img1, img2, img3];
   return (
-    <div className="flex w-full">
+    <div className="flex w-full bg-black">
       <Fragment>
         {/* <Sidebar></Sidebar> */}
 
@@ -25,12 +25,10 @@ const ProductsPage = () => {
           <Navbar />
         </div> */}
 
-        <div className="flex flex-initial justify-center items-center">
+        <div className="flex flex-initial justify-center items-center w-full">
           {/* <Navbar /> */}
-          <div className="flex flex-col ">
-            {/* <Navbar /> */}
+          <div className="flex flex-col w-full">
             <CucakRowo />
-            <div className="overflow-x-hidden"></div>
             <Ndasem />
             {/* <Fitur /> */}
             {/* <Testimoni /> */}

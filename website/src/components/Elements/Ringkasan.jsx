@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const CucakRowo = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImagesArray] = useState([]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -34,12 +35,23 @@ const CucakRowo = () => {
     }
   };
 
+  const handleSearch = () => {
+    // Handle displaying multiple images from the selectedImagesArray
+    if (selectedImagesArray.length > 0) {
+      // Display logic for multiple images
+      alert(`Displaying ${selectedImagesArray.length} images`);
+      // You can add logic here to display the images as needed
+    } else {
+      alert("Please upload at least one image before searching");
+    }
+  };
+
   return (
-    <div className="py-20 h-full border-gray-700 shadow flex flex-col justify-between" style={{ backgroundColor: "#28293D" }}>
+    <div className="py-20 w-full h-full border-gray-700 shadow flex flex-col justify-between " style={{ backgroundColor: "#28293D" }}>
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <p className="mt-2 text-5xl font-bold mb-10 text-center text-white">REVERSE IMAGE SEARCH</p>
-          <div className="flex flex-row inline-block w-full mt-32">
+          <div className="flex flex-row inline-block mt-32">
             <div className=" w-3/5 mt-5 h-fit bg-black mx-16">
               {/* Display the selected image */}
               {selectedImage && (
@@ -88,12 +100,13 @@ const CucakRowo = () => {
                    </a>
                  </div>
                  <div className="my-2">
-                   <a
-                     href="#"
+                   {/* Replace the anchor tag with the search button */}
+                   <button
+                     onClick={handleSearch}
                      className="inline-block text-xl align-middle px-16 py-2 mx-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
                    >
                      Search
-                   </a>
+                   </button>
                  </div>
               </div>
             </div>
@@ -105,67 +118,3 @@ const CucakRowo = () => {
 };
 
 export default CucakRowo;
-
-
-// const Ringkasan = () => {
-//   return (
-//     <div
-//       className="py-20 h-full border-gray-700 shadow flex flex-col justify-between"
-//       style={{ backgroundColor: "#28293D" }}
-//     >
-//       <div className="flex flex-col">
-//         <div className="overflow-x-auto">
-//           <p className="mt-2 text-5xl font-bold mb-10 text-center text-white">
-//             REVERSE IMAGE SEARCH
-//           </p>
-//           <div className="flex flex-row inline-block w-full mt-32">
-//             <div className=" w-3/5 mt-5 h-fit bg-black mx-16">
-//               <img
-//                 src="public\images\beranda.png"
-//                 alt="logo"
-//                 className=" ml-5 p-8 rounded-t-lg"
-//               />
-//             </div>
-//             <div className="flex flex-col mt-10 mx-20 w-2/5 text-white justify-center items-center text-lg">
-//               <div className="h-full">
-//                 <p className="text-white font-bold my-4">Image Input</p>
-//                 <a
-//                   href="#"
-//                   className="inline-block text-xl align-middle px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
-//                 >
-//                   Insert an Image
-//                 </a>
-//               </div>
-//               <div className="h-full justify-center items-center text-center mt-32">
-//                 <div className="flex flex-row">
-//                   <a
-//                     href="#"
-//                     className="inline-block text-xl align-middle px-6 py-2 mx-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
-//                   >
-//                     Color
-//                   </a>
-//                   <a
-//                     href="#"
-//                     className="inline-block text-xl align-middle px-6 py-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
-//                   >
-//                     Texture
-//                   </a>
-//                 </div>
-//                 <div className="my-2">
-//                   <a
-//                     href="#"
-//                     className="inline-block text-xl align-middle px-16 py-2 mx-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
-//                   >
-//                     Search
-//                   </a>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Ringkasan;
