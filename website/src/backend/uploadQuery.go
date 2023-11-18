@@ -9,13 +9,11 @@ import (
 	"time"
 
 	"net/http"
-
-	"gonum.org/v1/gonum/mat"
 )
 
 const PORT = "8080"
 
-var queryVecDense [4][4]*mat.VecDense
+var queryImage ImageFeature
 
 func Ping(w http.ResponseWriter, r *http.Request) {
 	answer := map[string]interface{}{
@@ -74,14 +72,14 @@ func UploadImages(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		err = os.MkdirAll("./uploads", os.ModePerm)
+		err = os.MkdirAll("../../public/images/uploads", os.ModePerm)
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusInternalServerError
 			break
 		}
 
-		f, err := os.Create(fmt.Sprintf("./uploads/%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename)))
+		f, err := os.Create(fmt.Sprintf("../../public/images/uploads%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename)))
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
@@ -99,7 +97,10 @@ func UploadImages(w http.ResponseWriter, r *http.Request) {
 
 		// Call processPicture with the uploaded image's path
 		vektor1 := processPicture(f.Name())
-		queryVecDense = vektor1
+		vektor2 := processPicture_texture(f.Name())
+		queryImage.data_color = vektor1
+		queryImage.data_texture = vektor2
+		queryImage.filename = f.Name()
 		fmt.Printf("Vektor1: %f\n", vektor1)
 	}
 

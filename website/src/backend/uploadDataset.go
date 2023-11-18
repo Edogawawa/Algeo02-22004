@@ -113,19 +113,52 @@ type Employee struct {
 
 type ImageFeature struct {
 	filename string
-	data     [4][4]*mat.VecDense
+	data_color     [4][4]*mat.VecDense
+	data_texture   []float64
 }
 
 var arrVecDence []ImageFeature
 
-func checkColorSimilarity() {
-
+func checkColorSimilarity() ([]string, []float64) {
+	var filename []string
+	var result []float64
 	var length = len(arrVecDence)
 	for y := 0; y < length; y++ {
-		temp := cosine_similarity(queryVecDense, arrVecDence[y].data)
-		fmt.Println("filename ", arrVecDence[y].filename)
+		temp := cosine_similarity(queryImage.data_color, arrVecDence[y].data_color)
+		fname := arrVecDence[y].filename
+		fmt.Println("filename ", fname)
 		fmt.Println("simmilarity: ", temp)
+		if(temp > 0.6){
+			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
+			
+			filename = append(filename, fname)
+			result = append(result, temp)
+		}
 	}
+	return filename, result
+}
+
+func checkTextureSimmilarity() ([]string, []float64){
+	var filename []string
+	var result []float64
+	var length = len(arrVecDence)
+	for y := 0; y < length; y++ {
+		temp := cosine_similarity_texture(queryImage.data_texture, arrVecDence[y].data_texture)
+		fname := arrVecDence[y].filename
+		fmt.Println("filename ", fname)
+		fmt.Println("simmilarity: ", temp)
+		if(temp > 0.6){
+			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
+			
+			filename = append(filename, fname)
+			result = append(result, temp)
+		}
+	}
+	return filename, result
+}
+
+type JsonRequest struct {
+	URL string `json:"url"`
 }
 
 func runGin() {
@@ -135,9 +168,12 @@ func runGin() {
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	// Specify the destination folder to save the uploaded files
-	dst := "uploadDataset"
+	dst := "../../public/images/uploadDataset"
 
 	router.POST("/uploadDataset", func(c *gin.Context) {
+		// clear array everytime dataset uploaded
+		arrVecDence = nil
+
 		// Multipart form
 		form, err := c.MultipartForm()
 		if err != nil {
@@ -154,7 +190,7 @@ func runGin() {
 			// Create the destination path for the file
 			destPath := filepath.Join(dst, replaced_string)
 			// fmt.Printf("destPath: %s\n", destPath)
-			bakulGorengan := "./uploadDataset/" + replaced_string
+			bakulGorengan := "../../public/images/uploadDataset/" + replaced_string
 			fmt.Printf("bakulGorengan: %s\n", bakulGorengan)
 
 			// Upload the file to the specified destination
@@ -169,7 +205,10 @@ func runGin() {
 			// fmt.Printf("Vektor: %f\n", vektor2)
 
 			imgfeat.filename = bakulGorengan
-			imgfeat.data = vektor2
+			imgfeat.data_color   = vektor2
+
+			vektor2_texture := processPicture_texture(bakulGorengan)
+			imgfeat.data_texture = vektor2_texture
 
 			arrVecDence = append(arrVecDence, imgfeat)
 
@@ -220,10 +259,42 @@ func runGin() {
 	})
 
 	router.GET("/colorResult", func(c *gin.Context) {
-		checkColorSimilarity()
-		jsonData := []byte(`{"msg":"this worked"}`)
+		c.Header("Access-Control-Allow-Origin", "*")
+        file, result := checkColorSimilarity()
+        c.JSON(200, gin.H{
+            "data": file,
+			"result" : result,
+        })
+	})
 
-		c.Data(http.StatusOK, gin.MIMEJSON, jsonData)
+	router.GET("/textureResult", func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
+        file, result := checkTextureSimmilarity()
+        c.JSON(200, gin.H{
+            "data": file,
+			"result" : result,
+        })
+	})
+
+	router.POST("/scrapping", func(c *gin.Context) {
+		var requestData JsonRequest
+
+		c.BindJSON(&requestData)
+
+		url := requestData.URL
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		fmt.Println("ini dari scrapping")
+		fmt.Println(url)
+		scraping_image(url)
+		// c.Header("Access-Control-Allow-Origin", "*")
+        // file, result := checkTextureSimmilarity()
+		// c.String(http.StatusOK, fmt.Sprintf("files uploaded!"))
+        c.JSON(200, gin.H{
+            // "data": file,
+			// "result" : result,
+			"name": "edbert",
+        })
 	})
 
 	// Run the server on port 8080

@@ -1,40 +1,49 @@
 import React, { useState, useEffect } from "react";
 
-const Ndasem = () => {
+const Ndasem = (props) => {
   const [imagesVisible, setImagesVisible] = useState(false);
-  const [images, setImages] = useState([]);
+  const { imageList, setImageList } = props;
+  const [imageSize, setImageSize] = useState(0);
+  // const { correctImages, setCorrectImages } = useState([]);
 
   const toggleImagesVisibility = () => {
     setImagesVisible(!imagesVisible);
   };
 
   useEffect(() => {
-    const importImages = async () => {
-      // Define the glob pattern for your images ../../../public/images/*
-      const imageFiles = import.meta.glob(
-        "../../../public/images/\\*.{png,jpg,jpeg,svg, bmp}"
-      );
+    console.log("============= dari coreteamjs ===========");
+    console.log(imageList);
+    console.log(imageList.length);
+    setImageSize(imageList.length);
+  }, [imageList]);
 
-      // Extract the image sources and alt text
-      const imagesData = await Promise.all(
-        Object.keys(imageFiles).map(async (key) => {
-          // console.log(key);
-          // console.log(imageFiles[key]);
-          // console.log(imageFiles[key]());
-          const src = imageFiles[key]().default;
-          // console.log(src);
-          const alt = key.slice(key.lastIndexOf("/") + 1, key.lastIndexOf("."));
-          const temp = key.split("/");
-          const ans = temp[temp.length - 1];
-          return { ans, alt };
-        })
-      );
+  // useEffect(() => {
+  //   const importImages = async () => {
+  //     // Define the glob pattern for your images ../../../public/images/*
+  //     const imageFiles = import.meta.glob(
+  //       "../../../public/images/uploadDataset/*.{png,jpg,jpeg,svg, bmp}"
+  //     );
 
-      setImages(imagesData);
-    };
+  //     // Extract the image sources and alt text
+  //     const imagesData = await Promise.all(
+  //       Object.keys(imageFiles).map(async (key) => {
+  //         console.log(key);
+  //         console.log(imageFiles[key]);
+  //         console.log(imageFiles[key]());
+  //         const src = imageFiles[key]().default;
+  //         console.log(src);
+  //         const alt = key.slice(key.lastIndexOf("/") + 1, key.lastIndexOf("."));
+  //         const temp = key.split("/");
+  //         const ans = temp[temp.length - 1];
+  //         return { ans, alt };
+  //       })
+  //     );
 
-    importImages();
-  }, []);
+  //     setImages(imagesData);
+  //   };
+
+  //   importImages();
+  // }, []);
 
   return (
     <div
@@ -58,19 +67,29 @@ const Ndasem = () => {
               >
                 {imagesVisible ? "Hide Images" : "Show Images"}
               </button>
+              {imageSize}
+              {imageList.map((images) => {
+                images;
+              })}
               {/* Display images only if imagesVisible state is true */}
-              {imagesVisible && (
-                <div className="columns-3 gap-4">
+              {imagesVisible && imageSize > 0 && (
+                <div className="grid grid-cols-3 gap-4">
                   {/* Map over the images and render them */}
-                  {images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={
-                        window.location.origin + "/public/images/" + image.ans
-                      }
-                      alt={image.alt}
-                      className="transition duration-300 ease-in-out hover:opacity-50 py-6"
-                    />
+                  {imageList.map((image, index) => (
+                    <div>
+                      <img
+                        id={image}
+                        key={index}
+                        src={
+                          window.location.origin +
+                          "/images/uploadDataset/" +
+                          image.image
+                        }
+                        alt={image.alt}
+                        className="transition duration-300 ease-in-out hover:opacity-50 py-6"
+                      />
+                      <p>{image.result}</p>
+                    </div>
                   ))}
                 </div>
               )}

@@ -1,10 +1,19 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 // import Navbar from "../../components/Elements/Navbar/Navbar";
 import CucakRowo from "../components/Elements/Ringkasan";
 import Ndasem from "../components/Elements/CoreTeam";
+import { useState } from "react";
+import BonusScrapping from "../components/Elements/BonusScrapping";
 
 const ProductsPage = () => {
   // const slides = [img1, img2, img3];
+  const [imageList, setImageList] = useState([]);
+
+  useEffect(() => {
+    console.log("ini dari product.jsx ================");
+    console.log(imageList);
+  }, [imageList]);
+
   return (
     <div className="flex w-full bg-black">
       <Fragment>
@@ -28,8 +37,9 @@ const ProductsPage = () => {
         <div className="flex flex-initial justify-center items-center w-full">
           {/* <Navbar /> */}
           <div className="flex flex-col w-full">
-            <CucakRowo />
-            <Ndasem />
+            <CucakRowo imageList={imageList} setImageList={setImageList} />
+            <Ndasem imageList={imageList} setImageList={setImageList} />
+            <BonusScrapping imageList={imageList} setImageList={setImageList} />
             {/* <Fitur /> */}
             {/* <Testimoni /> */}
             {/* <Sponsor /> */}
