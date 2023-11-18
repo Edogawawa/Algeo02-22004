@@ -8,13 +8,14 @@ import (
 	"path/filepath"
 	"time"
 
-	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"gonum.org/v1/gonum/mat"
 )
 
 const PORT = "8080"
+
+var queryVecDense [4][4]*mat.VecDense
 
 func Ping(w http.ResponseWriter, r *http.Request) {
 	answer := map[string]interface{}{
@@ -98,6 +99,7 @@ func UploadImages(w http.ResponseWriter, r *http.Request) {
 
 		// Call processPicture with the uploaded image's path
 		vektor1 := processPicture(f.Name())
+		queryVecDense = vektor1
 		fmt.Printf("Vektor1: %f\n", vektor1)
 	}
 
@@ -122,17 +124,15 @@ func UploadImages(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
-func main() {
-	r := mux.NewRouter()
+// func main() {
+// 	r := mux.NewRouter()
 
-	r.HandleFunc("/ping", Ping).Methods("GET")
-	r.HandleFunc("/upload", UploadImages).Methods("POST")
+// 	r.HandleFunc("/ping", Ping).Methods("GET")
+// 	r.HandleFunc("/upload", UploadImages).Methods("POST")
 
-	log.Printf("Server is running on http://localhost:%s", PORT)
-	log.Println(http.ListenAndServe(":"+PORT, r))
-}
-
-
+// 	log.Printf("Server is running on http://localhost:%s", PORT)
+// 	log.Println(http.ListenAndServe(":"+PORT, r))
+// }
 
 // package main
 
@@ -261,7 +261,6 @@ func main() {
 //     w.WriteHeader(http_status)
 //     json.NewEncoder(w).Encode(resp)
 
-    
 // }
 
 // func main() {
@@ -270,12 +269,11 @@ func main() {
 // 	r.HandleFunc("/ping", Ping).Methods("GET")
 //     // r.HandleFunc("/upload", nil).Methods("POST")
 // 	r.HandleFunc("/upload", UploadImages).Methods("POST")
-    
+
 //     // var vektor1 float64
 //     vektor1 := processPicture("./uploads/1700031094273167400.png")
 //     // cosine_similarity(vektor1, vektor1)
 //     fmt.Printf("%f\n",vektor1)
-
 
 //     log.Printf("Server is running on http://localhost:%s", PORT)
 //     log.Println(http.ListenAndServe(":"+PORT, r))

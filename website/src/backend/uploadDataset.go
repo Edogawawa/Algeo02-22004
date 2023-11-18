@@ -97,6 +97,7 @@ import (
 	// "gonum.org/v1/gonum/mat"
 
 	"github.com/gin-gonic/gin"
+	"gonum.org/v1/gonum/mat"
 	// "gonum.org/v1/gonum/mat"
 )
 
@@ -110,7 +111,24 @@ type Employee struct {
 	Vec string
 }
 
-func main() {
+type ImageFeature struct {
+	filename string
+	data     [4][4]*mat.VecDense
+}
+
+var arrVecDence []ImageFeature
+
+func checkColorSimilarity() {
+
+	var length = len(arrVecDence)
+	for y := 0; y < length; y++ {
+		temp := cosine_similarity(queryVecDense, arrVecDence[y].data)
+		fmt.Println("filename ", arrVecDence[y].filename)
+		fmt.Println("simmilarity: ", temp)
+	}
+}
+
+func runGin() {
 	router := gin.Default()
 
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
@@ -124,14 +142,14 @@ func main() {
 		form, err := c.MultipartForm()
 		if err != nil {
 			c.String(http.StatusBadRequest, fmt.Sprintf("Error: %s", err.Error()))
-			return 
+			return
 		}
 
 		files := form.File["files"]
 
 		for _, file := range files {
 			log.Println(file.Filename)
-			replaced_string :=  strings.Replace(file.Filename, " ", "-", -1)
+			replaced_string := strings.Replace(file.Filename, " ", "-", -1)
 
 			// Create the destination path for the file
 			destPath := filepath.Join(dst, replaced_string)
@@ -144,23 +162,30 @@ func main() {
 				c.String(http.StatusInternalServerError, fmt.Sprintf("Error saving file: %s", err.Error()))
 				return
 			}
-			vektor2 := processPicture(bakulGorengan)      // ./Folder/namfile
-			fmt.Printf("Vektor: %f\n", vektor2)
+
+			var imgfeat ImageFeature
+
+			vektor2 := processPicture(bakulGorengan) // ./Folder/namfile
+			// fmt.Printf("Vektor: %f\n", vektor2)
+
+			imgfeat.filename = bakulGorengan
+			imgfeat.data = vektor2
+
+			arrVecDence = append(arrVecDence, imgfeat)
 
 			// jinguk := "peh"
 			// data := Employee{
 			// 	Vec: bakulGorengan,
 			// }
 
-
-			a := Employee{Vec:bakulGorengan}
+			a := Employee{Vec: bakulGorengan}
 			// o := Employee{Vec:"Orange"}
-		  
+
 			var fs []Employee
 			fs = append(fs, a)
 			// fs = append(fs, o)
 			log.Println(fs)
-		  
+
 			// j, _ := json.Marshal(fs)
 			// log.Println(string(j))
 
@@ -169,11 +194,14 @@ func main() {
 
 			file, _ := json.MarshalIndent(fs, "", " ")
 			_ = ioutil.WriteFile("test.json", file, 0644)
-			}
+		}
 
-			// file, _ := json.MarshalIndent(data, "", " ")
-			// _ = ioutil.WriteFile("test.json", file, 0644)
-			// }
+		// fmt.Println("ini hasil akhir")
+		// fmt.Printf("hasil akhir: %f\n", arrVecDence[0])
+
+		// file, _ := json.MarshalIndent(data, "", " ")
+		// _ = ioutil.WriteFile("test.json", file, 0644)
+		// }
 
 		// data := Vevek{
 		// 	vektor : "aowkowak",
@@ -186,9 +214,18 @@ func main() {
 		// fmt.Println(string(data1))
 
 		c.String(http.StatusOK, fmt.Sprintf("%d files uploaded!", len(files)))
-		
+
+		// checking all images
+
+	})
+
+	router.GET("/colorResult", func(c *gin.Context) {
+		checkColorSimilarity()
+		jsonData := []byte(`{"msg":"this worked"}`)
+
+		c.Data(http.StatusOK, gin.MIMEJSON, jsonData)
 	})
 
 	// Run the server on port 8080
-	router.Run(":8080")
+	router.Run(":8081")
 }
