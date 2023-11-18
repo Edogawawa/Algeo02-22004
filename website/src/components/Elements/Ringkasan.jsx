@@ -34,7 +34,12 @@ const CucakRowo = () => {
       alert("Please select an image to upload");
     }
   };
-
+  const handleColorSearch = () => {
+    const response = fetch("http://localhost:8081/colorResult", {
+          method: "GET",
+        });
+    console.log(response)
+  }
   const handleSearch = () => {
     // Handle displaying multiple images from the selectedImagesArray
     if (selectedImagesArray.length > 0) {
@@ -89,6 +94,7 @@ const CucakRowo = () => {
                    <a
                      href="#"
                      className="inline-block text-xl align-middle px-6 py-2 mx-2 leading-none border rounded-lg text-black border-white hover:border-transparent hover:text-white hover:bg-yellow-500 bg-white font-semibold"
+                     onClick={handleColorSearch}
                    >
                      Color
                    </a>

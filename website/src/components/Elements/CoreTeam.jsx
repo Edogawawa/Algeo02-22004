@@ -18,9 +18,9 @@ const Ndasem = () => {
       // Extract the image sources and alt text
       const imagesData = await Promise.all(
         Object.keys(imageFiles).map(async (key) => {
-          console.log(key);
-          console.log(imageFiles[key]);
-          console.log(imageFiles[key]());
+          // console.log(key);
+          // console.log(imageFiles[key]);
+          // console.log(imageFiles[key]());
           const src = imageFiles[key]().default;
           // console.log(src);
           const alt = key.slice(key.lastIndexOf("/") + 1, key.lastIndexOf("."));
@@ -78,7 +78,7 @@ const Ndasem = () => {
                 <p>1 | 2 | 3 | Ini pagination | 4 | 5 | 6</p>
                 {/* Form for uploading dataset */}
                 <form
-                  action="http://localhost:8080/uploadDataset"
+                  action="http://localhost:8081/uploadDataset"
                   method="post"
                   encType="multipart/form-data"
                 >
