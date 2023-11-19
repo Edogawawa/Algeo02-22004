@@ -57,12 +57,12 @@ Install for Back End:
 
 Run Front end:
 {Masuk ke folder website}
-- cd website
+- cd src
 - npm run dev
 
 Run Back End:
 {Masuk ke foler bcakend}
-- cd website
+- cd src
 - cd src
 - cd backend
 - go run .
