@@ -88,6 +88,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	// "os"
@@ -99,6 +100,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/jung-kurt/gofpdf"
 	"gonum.org/v1/gonum/mat"
 	// "gonum.org/v1/gonum/mat"
 )
@@ -115,9 +117,17 @@ type ImageFeature struct {
 
 var arrVecDence []ImageFeature
 
+type imageToPdfStruct struct {
+	filename string
+	result   float64
+}
+
+var imageToPdf []imageToPdfStruct
+
 func checkColorSimilarity() ([]string, []float64, time.Duration) {
 	start := time.Now()
 	var filename []string
+	imageToPdf = nil
 	var result []float64
 	var length = len(arrVecDence)
 	for y := 0; y < length; y++ {
@@ -129,6 +139,11 @@ func checkColorSimilarity() ([]string, []float64, time.Duration) {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
 			filename = append(filename, fname)
 			result = append(result, temp)
+
+			var tempPdf imageToPdfStruct
+			tempPdf.filename = fname
+			tempPdf.result = temp
+			imageToPdf = append(imageToPdf, tempPdf)
 		}
 	}
 	elapsed := time.Since(start)
@@ -139,6 +154,7 @@ func checkColorSimilarity() ([]string, []float64, time.Duration) {
 func checkTextureSimmilarity() ([]string, []float64, time.Duration) {
 	start := time.Now()
 	var filename []string
+	imageToPdf = nil
 	var result []float64
 	var length = len(arrVecDence)
 	for y := 0; y < length; y++ {
@@ -150,6 +166,11 @@ func checkTextureSimmilarity() ([]string, []float64, time.Duration) {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
 			filename = append(filename, fname)
 			result = append(result, temp)
+
+			var tempPdf imageToPdfStruct
+			tempPdf.filename = fname
+			tempPdf.result = temp
+			imageToPdf = append(imageToPdf, tempPdf)
 		}
 	}
 	elapsed := time.Since(start)
@@ -160,11 +181,33 @@ type JsonRequest struct {
 	URL string `json:"url"`
 }
 
+func addPageWithImageAndText(pdf **gofpdf.Fpdf, imagePath string, text float64) {
+	imagePath = "../../public/images/uploadDataset/" + imagePath
+	fmt.Println(imagePath)
+	// Add a new page to the PDF
+	(*pdf).AddPage()
+
+	// Set font
+	(*pdf).SetFont("Arial", "", 12)
+
+	// Add text
+
+	s := fmt.Sprintf("%f", text)
+	s = "Simmilarity : " + s
+	(*pdf).Cell(40, 10, s)
+
+	fmt.Println("called")
+
+	// Add image to the PDF
+	x, y, width, height := 10.0, 30.0, 90.0, 0.0
+	(*pdf).Image(imagePath, x, y, width, height, false, "", 0, "")
+}
+
 func runGin() {
 	router := gin.Default()
 
 	// Enable CORS middleware
-    router.Use(cors.Default())
+	router.Use(cors.Default())
 
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
@@ -250,6 +293,43 @@ func runGin() {
 			"result": result,
 			"time":   elapsed,
 		})
+	})
+
+	router.GET("/exportPdf", func(c *gin.Context) {
+		fmt.Println("Backend CALLED")
+		c.Header("Access-Control-Allow-Origin", "*")
+
+		pdf := gofpdf.New("P", "mm", "A4", "") // Create a new PDF instance
+		// Add a new page to the PDF --- PEMBANDING
+		pdf.AddPage()
+
+		// Set font
+		pdf.SetFont("Arial", "", 20)
+		pdf.Cell(40, 10, "Image Query")
+		// Add image to the PDF
+		x, y, width, height := 10.0, 30.0, 90.0, 0.0
+		pdf.Image(queryImage.filename, x, y, width, height, false, "", 0, "")
+
+		for _, item := range imageToPdf {
+			addPageWithImageAndText(&pdf, item.filename, item.result)
+		}
+		// pdf.AddPage()                                     // Add a new page to the PDF document
+		// pdf.SetFont("Arial", "B", 16)                     // Set the font family, style, and size
+		// pdf.Cell(40, 10, "Hello, World!")                 // Add text to the PDF document
+		pdf.OutputFileAndClose("./folder_pdf/21.pdf") // Save the PDF document to a file
+
+		folder := "./folder_pdf/"
+		filePath := folder + "21.pdf"
+		fileData, err := os.ReadFile(filePath)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read file"})
+			return
+		}
+
+		// Set the response headers
+		c.Header("Content-Disposition", "attachment; filename=file.pdf")
+		c.Data(http.StatusOK, "application/octet-stream", fileData)
+
 	})
 
 	router.POST("/scrapping", func(c *gin.Context) {
