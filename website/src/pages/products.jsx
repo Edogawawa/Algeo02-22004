@@ -8,6 +8,7 @@ import BonusScrapping from "../components/Elements/BonusScrapping";
 const ProductsPage = () => {
   // const slides = [img1, img2, img3];
   const [imageList, setImageList] = useState([]);
+  const [timeElapsed, setTimeElapsed] = useState({});
 
   useEffect(() => {
     console.log("ini dari product.jsx ================");
@@ -37,9 +38,9 @@ const ProductsPage = () => {
         <div className="flex flex-initial justify-center items-center w-full">
           {/* <Navbar /> */}
           <div className="flex flex-col w-full">
-            <CucakRowo imageList={imageList} setImageList={setImageList} />
-            <Ndasem imageList={imageList} setImageList={setImageList} />
-            <BonusScrapping imageList={imageList} setImageList={setImageList} />
+            <CucakRowo imageList={imageList} setImageList={setImageList} timeElapsed={timeElapsed} setTimeElapsed={setTimeElapsed} />
+            <Ndasem imageList={imageList} setImageList={setImageList} timeElapsed={timeElapsed} setTimeElapsed={setTimeElapsed} />
+            <BonusScrapping imageList={imageList} setImageList={setImageList} timeElapsed={timeElapsed} setTimeElapsed={setTimeElapsed} />
             {/* <Fitur /> */}
             {/* <Testimoni /> */}
             {/* <Sponsor /> */}
