@@ -5,6 +5,8 @@ import Ndasem from "../components/Elements/Tengah";
 import { useState } from "react";
 import BonusScrapping from "../components/Elements/BonusScrapping";
 import Navbar from "../components/Elements/Navbar";
+import { Button } from "bootstrap";
+import ExportPDF from "../components/Elements/ExportPDF";
 
 const ProductsPage = () => {
   // const slides = [img1, img2, img3];
@@ -40,6 +42,8 @@ const ProductsPage = () => {
               timeElapsed={timeElapsed}
               setTimeElapsed={setTimeElapsed}
             />
+            
+            <ExportPDF />
           </div>
         </div>
       </Fragment>
