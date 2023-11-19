@@ -8,10 +8,10 @@ const About = () => {
     >
       <div className="flex flex-col">
         <div className="overflow-x-auto">
-          <div className="flex flex-row inline-block mt-32  text-center justify-center items-center">
-            <div className="flex flex-col mt-10 mx-20 w-2/5 text-white justify-center items-center text-lg">
-              <div className="h-full justify-center items-center  text-center justify-center mt-32">
-                <p className="mt-32 text-5xl font-bold mb-10 text-center text-white">
+          <div className="flex flex-row inline-block text-center justify-center items-center">
+            <div className="flex flex-col mt-10 mx-20 w-2/5 text-white items-center text-lg">
+              <div className="h-full justify-center items-center text-justify">
+                <p className="mt-2 text-5xl font-bold mb-10 text-center text-white">
                   About Us
                 </p>
                 <img
