@@ -88,6 +88,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	// "os"
 	"encoding/json"
@@ -112,14 +113,15 @@ type Employee struct {
 }
 
 type ImageFeature struct {
-	filename string
-	data_color     [4][4]*mat.VecDense
-	data_texture   []float64
+	filename     string
+	data_color   [4][4]*mat.VecDense
+	data_texture []float64
 }
 
 var arrVecDence []ImageFeature
 
-func checkColorSimilarity() ([]string, []float64) {
+func checkColorSimilarity() ([]string, []float64, time.Duration) {
+	start := time.Now()
 	var filename []string
 	var result []float64
 	var length = len(arrVecDence)
@@ -128,17 +130,20 @@ func checkColorSimilarity() ([]string, []float64) {
 		fname := arrVecDence[y].filename
 		fmt.Println("filename ", fname)
 		fmt.Println("simmilarity: ", temp)
-		if(temp > 0.6){
+		if temp > 0.6 {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
-			
+
 			filename = append(filename, fname)
 			result = append(result, temp)
 		}
 	}
-	return filename, result
+	elapsed := time.Since(start)
+	fmt.Println(elapsed)
+	return filename, result, elapsed
 }
 
-func checkTextureSimmilarity() ([]string, []float64){
+func checkTextureSimmilarity() ([]string, []float64, time.Duration) {
+	start := time.Now()
 	var filename []string
 	var result []float64
 	var length = len(arrVecDence)
@@ -147,14 +152,15 @@ func checkTextureSimmilarity() ([]string, []float64){
 		fname := arrVecDence[y].filename
 		fmt.Println("filename ", fname)
 		fmt.Println("simmilarity: ", temp)
-		if(temp > 0.6){
+		if temp > 0.6 {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
-			
+
 			filename = append(filename, fname)
 			result = append(result, temp)
 		}
 	}
-	return filename, result
+	elapsed := time.Since(start)
+	return filename, result, elapsed
 }
 
 type JsonRequest struct {
@@ -205,7 +211,7 @@ func runGin() {
 			// fmt.Printf("Vektor: %f\n", vektor2)
 
 			imgfeat.filename = bakulGorengan
-			imgfeat.data_color   = vektor2
+			imgfeat.data_color = vektor2
 
 			vektor2_texture := processPicture_texture(bakulGorengan)
 			imgfeat.data_texture = vektor2_texture
@@ -260,20 +266,22 @@ func runGin() {
 
 	router.GET("/colorResult", func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
-        file, result := checkColorSimilarity()
-        c.JSON(200, gin.H{
-            "data": file,
-			"result" : result,
-        })
+		file, result, elapsed := checkColorSimilarity()
+		c.JSON(200, gin.H{
+			"data":   file,
+			"result": result,
+			"time":   elapsed,
+		})
 	})
 
 	router.GET("/textureResult", func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
-        file, result := checkTextureSimmilarity()
-        c.JSON(200, gin.H{
-            "data": file,
-			"result" : result,
-        })
+		file, result, elapsed := checkTextureSimmilarity()
+		c.JSON(200, gin.H{
+			"data":   file,
+			"result": result,
+			"time":   elapsed,
+		})
 	})
 
 	router.POST("/scrapping", func(c *gin.Context) {
@@ -288,13 +296,13 @@ func runGin() {
 		fmt.Println(url)
 		scraping_image(url)
 		// c.Header("Access-Control-Allow-Origin", "*")
-        // file, result := checkTextureSimmilarity()
+		// file, result := checkTextureSimmilarity()
 		// c.String(http.StatusOK, fmt.Sprintf("files uploaded!"))
-        c.JSON(200, gin.H{
-            // "data": file,
+		c.JSON(200, gin.H{
+			// "data": file,
 			// "result" : result,
 			"name": "edbert",
-        })
+		})
 	})
 
 	// Run the server on port 8080

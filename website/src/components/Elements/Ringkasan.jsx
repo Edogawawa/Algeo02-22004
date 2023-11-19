@@ -4,7 +4,7 @@ const CucakRowo = (props) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImagesArray] = useState([]);
   const [toggleState, setToggleSetState] = useState(0);
-  const { imageList, setImageList } = props;
+  const { imageList, setImageList, timeElapsed, setTimeElapsed } = props;
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -40,6 +40,7 @@ const CucakRowo = (props) => {
       alert("Please select an image to upload");
     }
   };
+
   const handleColorSearch = async () => {
     const response = await fetch("http://localhost:8081/colorResult", {
       method: "GET",
@@ -58,6 +59,17 @@ const CucakRowo = (props) => {
     }
     temp.sort((a, b) => b.result - a.result);
     setImageList(temp);
+
+    var range = ""
+    if(data.time > 1000000000){
+      data.time = data.time / 1000000000;
+      range = "s"
+    } else {
+      data.time = data.time / 1000000;
+      range = "ms"
+    }
+    setTimeElapsed({"time": data.time, "type": range})
+    console.log(data.time)
     console.log("isi image list");
     console.log(imageList);
   };

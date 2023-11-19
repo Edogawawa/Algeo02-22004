@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Ndasem = (props) => {
   const [imagesVisible, setImagesVisible] = useState(false);
-  const { imageList, setImageList } = props;
+  const { imageList, setImageList, timeElapsed, setTimeElapsed } = props;
   const [imageSize, setImageSize] = useState(0);
   // const { correctImages, setCorrectImages } = useState([]);
 
@@ -57,7 +57,7 @@ const Ndasem = (props) => {
               <div className="flex flex-row justify-left">
                 <p className="w-1/2 text-xl font-bold text-left">Result:</p>
                 <p className="w-1/2 text-xl text-right">
-                  ... Results in ... seconds.
+                  {imageSize} Results in {timeElapsed.time} {timeElapsed.type}.
                 </p>
               </div>
               {/* Toggle button to show/hide images */}
