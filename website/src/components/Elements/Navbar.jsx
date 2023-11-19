@@ -25,7 +25,7 @@ const Navbar = () => {
         <div className="text-xl mr-5 lg:flex-grow font-bold">
           {/* Replace anchor elements with Link components */}
           <Link to="/" className="block mb-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-300 mr-10 no-underline">
-            Pencet Main LHOSSDOLL
+            Main
           </Link>
           <Link to="/konsep" className="block mb-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-300 mr-10 no-underline">
             Konsep Search Engine
