@@ -145,7 +145,7 @@ const Ndasem = (props) => {
                 {/* Pagination buttons */}
                 <button
                   onClick={() => paginate(currentPage - 1)}
-                  className="mr-2 border px-3 py-2"
+                  className="mr-2 border px-3 py-2 hover:bg-violet-600"
                   disabled={currentPage === 1}
                 >
                   {"<"}
@@ -156,7 +156,7 @@ const Ndasem = (props) => {
                     <button
                       key={i + 1}
                       onClick={() => paginate(i + 1)}
-                      className="mr-2 border px-3 py-2"
+                      className="mr-2 border px-3 py-2 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300"
                     >
                       {i + 1}
                     </button>
@@ -164,8 +164,10 @@ const Ndasem = (props) => {
                 )}
                 <button
                   onClick={() => paginate(currentPage + 1)}
-                  className="mr-2 border px-3 py-2"
-                  disabled={currentPage === Math.ceil(imageSize / imagesPerPage)}
+                  className="mr-2 border px-3 py-2 hover:bg-violet-600"
+                  disabled={
+                    currentPage === Math.ceil(imageSize / imagesPerPage)
+                  }
                 >
                   {">"}
                 </button>

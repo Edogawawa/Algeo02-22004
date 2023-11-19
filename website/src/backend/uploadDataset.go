@@ -127,7 +127,6 @@ func checkColorSimilarity() ([]string, []float64, time.Duration) {
 		fmt.Println("simmilarity: ", temp)
 		if temp > 0.6 {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
-			temp = temp * 100
 			filename = append(filename, fname)
 			result = append(result, temp)
 		}
@@ -149,7 +148,6 @@ func checkTextureSimmilarity() ([]string, []float64, time.Duration) {
 		fmt.Println("simmilarity: ", temp)
 		if temp > 0.6 {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
-			temp = temp * 100
 			filename = append(filename, fname)
 			result = append(result, temp)
 		}
