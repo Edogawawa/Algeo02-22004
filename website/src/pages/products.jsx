@@ -43,7 +43,10 @@ const ProductsPage = () => {
               setTimeElapsed={setTimeElapsed}
             />
             
-            <ExportPDF />
+            <ExportPDF 
+              imageList={imageList}
+              setImageList={setImageList}
+            />
           </div>
         </div>
       </Fragment>
