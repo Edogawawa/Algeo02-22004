@@ -10,10 +10,12 @@ import {
 // import Home component
 // import Home from "./components/Home";
 // import About component
-import About from "./components/About";
+// import About from "./components/About";
 // import ContactUs component
-import ContactUs from "./components/ContactUs";
-import ProductsPage from "./pages/Index/products";
+// import ContactUs from "./components/ContactUs";
+import ProductsPage from "./pages/products";
+// import About from "./pages/Index/about";
+import HowToUsePage from "./pages/howToUse";
 
 function App() {
   return (
@@ -33,12 +35,14 @@ function App() {
           {/* This route is for about component
 		with exact path "/about", in component
 		props we passes the imported component*/}
-          <Route path="/about" component={About} />
+          {/* <Route path="/about" component={About} /> */}
 
           {/* This route is for contactus component
 		with exact path "/contactus", in
 		component props we passes the imported component*/}
-          <Route path="/contactus" component={ContactUs} />
+          {/* <Route path="/contactus" component={ContactUs} /> */}
+          <Route path="/howToUse" component={HowToUsePage} />
+
 
           {/* If any route mismatches the upper
 		route endpoints then, redirect triggers

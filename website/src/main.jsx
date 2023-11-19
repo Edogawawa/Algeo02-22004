@@ -10,8 +10,11 @@ import ProductsPage from "./pages/products.jsx";
 // import Aktivitas from "./pages/Aktivitas/aktivitas";
 // import TentangKami from "./pages/TentangKami/tentangKami";
 // import FileUpload from "./pages/FileUpload";
+import HowToUsePage from "./pages/howToUse.jsx";
+import KonsepSearchEngine from "./pages/konsepSearchEngine.jsx";
 import PagingApp from "./PagingApp.jsx";
 import "bootstrap/dist/css/bootstrap.css"
+import AboutUs from "./pages/aboutUs.jsx";
 
 
 const router = createBrowserRouter([
@@ -24,30 +27,18 @@ const router = createBrowserRouter([
     path: "/paging",
     element: <PagingApp />,
   },
-  // {
-  //   path: "/login",
-  //   element: <LoginPage />,
-  // },
-  // {
-  //   path: "/register",
-  //   element: <RegisterPage />,
-  // },
-  // {
-  //   path: "/kasir",
-  //   element: <KasirPage />,
-  // },
-  // {
-  //   path: "/tentangKami",
-  //   element: <TentangKami />,
-  // },
-  // {
-  //   path: "/aktivitas",
-  //   element: <Aktivitas />,
-  // },
-  // {
-  //   path: "/file",
-  //   element: <FileUpload />,
-  // }
+  {
+    path: "/howToUse",
+    element: <HowToUsePage />,
+  },
+  {
+    path: "/konsep",
+    element: <KonsepSearchEngine />,
+  },
+  {
+    path: "/aboutUs",
+    element: <AboutUs />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

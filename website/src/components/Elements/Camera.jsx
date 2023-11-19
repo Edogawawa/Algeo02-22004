@@ -1,9 +1,9 @@
-import { useEffect } from "react"
+// import { useEffect } from "react"
 
-export const useCountdown = (initialTime: number, interval = 1000) => {
-    useEffect(() => {
-        const interval = setInterval(() => {
+// export const useCountdown = (initialTime: number, interval = 1000) => {
+//     useEffect(() => {
+//         const interval = setInterval(() => {
             
-        }, interval ?? 1000)
-    }, [])
-}
+//         }, interval ?? 1000)
+//     }, [])
+// }

@@ -97,16 +97,11 @@ import (
 
 	// "gonum.org/v1/gonum/mat"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gonum.org/v1/gonum/mat"
 	// "gonum.org/v1/gonum/mat"
 )
-
-// type Vevek struct {
-// 	// id string
-// 	// vektor [4][4]*mat.VecDense
-// 	vektor string
-// }
 
 type Employee struct {
 	Vec string
@@ -132,7 +127,7 @@ func checkColorSimilarity() ([]string, []float64, time.Duration) {
 		fmt.Println("simmilarity: ", temp)
 		if temp > 0.6 {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
-
+			temp = temp * 100
 			filename = append(filename, fname)
 			result = append(result, temp)
 		}
@@ -154,7 +149,7 @@ func checkTextureSimmilarity() ([]string, []float64, time.Duration) {
 		fmt.Println("simmilarity: ", temp)
 		if temp > 0.6 {
 			fname = strings.Split(fname, "/")[len(strings.Split(fname, "/"))-1]
-
+			temp = temp * 100
 			filename = append(filename, fname)
 			result = append(result, temp)
 		}
@@ -169,6 +164,9 @@ type JsonRequest struct {
 
 func runGin() {
 	router := gin.Default()
+
+	// Enable CORS middleware
+    router.Use(cors.Default())
 
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
@@ -218,11 +216,6 @@ func runGin() {
 
 			arrVecDence = append(arrVecDence, imgfeat)
 
-			// jinguk := "peh"
-			// data := Employee{
-			// 	Vec: bakulGorengan,
-			// }
-
 			a := Employee{Vec: bakulGorengan}
 			// o := Employee{Vec:"Orange"}
 
@@ -231,32 +224,9 @@ func runGin() {
 			// fs = append(fs, o)
 			log.Println(fs)
 
-			// j, _ := json.Marshal(fs)
-			// log.Println(string(j))
-
-			// j, _ = json.MarshalIndent(fs, "", "  ")
-			// log.Println(string(j))
-
 			file, _ := json.MarshalIndent(fs, "", " ")
 			_ = ioutil.WriteFile("test.json", file, 0644)
 		}
-
-		// fmt.Println("ini hasil akhir")
-		// fmt.Printf("hasil akhir: %f\n", arrVecDence[0])
-
-		// file, _ := json.MarshalIndent(data, "", " ")
-		// _ = ioutil.WriteFile("test.json", file, 0644)
-		// }
-
-		// data := Vevek{
-		// 	vektor : "aowkowak",
-		// }
-
-		// data := &Vevek{
-		// 	vektor:   "awokawok",
-		// }
-		// data1, _ := json.Marshal(data)
-		// fmt.Println(string(data1))
 
 		c.String(http.StatusOK, fmt.Sprintf("%d files uploaded!", len(files)))
 
@@ -295,9 +265,7 @@ func runGin() {
 		fmt.Println("ini dari scrapping")
 		fmt.Println(url)
 		scraping_image(url)
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// file, result := checkTextureSimmilarity()
-		// c.String(http.StatusOK, fmt.Sprintf("files uploaded!"))
+
 		c.JSON(200, gin.H{
 			// "data": file,
 			// "result" : result,
